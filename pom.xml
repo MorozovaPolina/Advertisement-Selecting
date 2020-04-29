@@ -10,7 +10,7 @@
   </modules>
   <properties>
     <jetty.version>9.4.27.v20200227</jetty.version>
-    <jersey.version>1.19</jersey.version>
+    <jersey.version>1.18</jersey.version>
   </properties>
   <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
@@ -85,18 +85,8 @@
       <!-- Activate PMD for java code checking -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <version>${pmd.plugin.version}</version>
-        <configuration>
-          <targetJdk>${java.version}</targetJdk>
-          <includeTests>true</includeTests>
-          <outputEncoding>UTF-8</outputEncoding>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>${checkstyle.plugin.version}</version>
+        <version>3.1.1</version>
         <configuration>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
         </configuration>
@@ -104,7 +94,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${mvn.plugin.compiler}</version>
+        <version> 3.8.1</version>
         <configuration>
           <source>${java.version}</source>
           <target>${java.version}</target>

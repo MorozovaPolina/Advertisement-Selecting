@@ -3,10 +3,8 @@ package model;
 
 import com.google.gson.GsonBuilder;
 import org.codehaus.jackson.annotate.JsonIgnore;
-import com.google.gson.*;
-import org.codehaus.jackson.map.ObjectMapper;
-
-import java.io.IOException;
+import com.google.gson.Gson;
+import org.codehaus.jettison.json.JSONString;
 
 
 public class Person {
@@ -30,13 +28,17 @@ public class Person {
         this.age = age;
     }
 
-    public String getGender() {
-        return gender.toString();
+    public Gender getGender() {
+        return gender;
     }
 
     public void setGender(String gender) {
         this.gender = Gender.valueOf(gender);
     }
+
+  /*  public void setGender(Gender gender){
+        this.gender=gender;
+    }*/
 
     public Emotions getEmotion() {
         return emotion;
@@ -62,8 +64,7 @@ public class Person {
         System.out.println("_______________________________________");
     }
 
-    public String toJSON() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(this);
+    public String toJSON(){
+        return new Gson().toJson(this);
     }
 }

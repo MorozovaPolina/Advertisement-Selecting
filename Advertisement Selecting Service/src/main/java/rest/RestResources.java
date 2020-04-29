@@ -1,28 +1,38 @@
 package rest;
 
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import helpers.Constants;
-import model.DemoInObject;
-import model.DemoOutObject;
 import model.Person;
 
 
-import javax.jws.WebService;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.IOException;
 
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
+import static javax.ws.rs.core.MediaType.*;
+
+@Produces(APPLICATION_JSON)
+@Consumes(APPLICATION_JSON)
 @Path("system")
 //@WebService
 public class RestResources {
     @POST
     @Path("select_advertisement")
-    public void select_advertisement(Person[] persons) {
+    public void select_advertisement(Person[] persons) throws IOException {
         for(Person person : persons){
+
+            Client client =  new Client();
+            WebResource webResource = client.resource(Constants.Viewer_Describing_Service);
+            ClientResponse clientResponse = webResource.accept(APPLICATION_JSON_TYPE).type(APPLICATION_JSON_TYPE).post(ClientResponse.class, person.toJSON());
+            if(clientResponse.getStatus() == 200)
+                    person.setDemographic_group(Long.parseLong(clientResponse.getEntity(String.class)));
             person.print_person();
+
+
         }
 
 
@@ -35,24 +45,11 @@ public class RestResources {
     }
 
     public Person demographic_group(Person person){
-        Client client = new Client();
-        WebResource webResource = client.resource(Constants.Viewer_Describing_Service);
-        webResource.type("application/json").post(ClientResponse.class, person.toJSON());
+       // Client client = new Client();
+       // WebResource webResource = client.resource(Constants.Viewer_Describing_Service);
+       // webResource.type("application/json").post(ClientResponse.class, person.toJSON());
         //person = webResource.entity(Person);
         return person;
-    }
-
-
-
-    @POST
-    @Path("demo")
-    public DemoOutObject demo(DemoInObject in) {
-        return new DemoOutObject(in.getRequest_id(),
-                in.getTransaction_type(),
-                in.getTime(),
-                in.getTarget(),
-                in.getSource(),
-                in.getOrder_number());
     }
 
 }
