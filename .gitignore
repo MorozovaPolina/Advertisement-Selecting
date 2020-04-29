@@ -1,0 +1,9 @@
+target/
+.idea/
+logs/
+*.iml
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.idea/
