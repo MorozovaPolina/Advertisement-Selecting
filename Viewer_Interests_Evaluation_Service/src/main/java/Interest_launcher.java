@@ -149,8 +149,9 @@ public class Interest_launcher {
             XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
             XSSFSheet interests_sheet = workbook.getSheetAt(0);
             for(Row row: interests_sheet){
-                Map<String, Double> group_interest = null;
+
                 if(row.getRowNum() == 0)continue;
+                Map<String, Double> group_interest = null;
                 for(Cell cell:row) {
                     if (cell.getColumnIndex() == 0) {
                         if (!interests.containsKey(cell.getNumericCellValue())) {

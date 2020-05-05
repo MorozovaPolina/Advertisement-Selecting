@@ -16,6 +16,7 @@ public class Advertisement_Selection_launcher {
             properties.load(inputStream);
             Constants.Viewer_Describing_Service = properties.getProperty("Viewer_Describing_Service");
             int port = Integer.parseInt(properties.getProperty("port_number"));
+            Constants.Interests_Evaluation_service = properties.getProperty("Interests_Evaluation_service");
 
             Locale.setDefault(Locale.ENGLISH);
             Server server = new Server(port);

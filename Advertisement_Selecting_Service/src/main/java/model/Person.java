@@ -5,6 +5,11 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 public class Person {
@@ -68,4 +73,14 @@ public class Person {
             return e.getMessage();
         }
     }
+
+    public static int get_advertisement(Map<String, Double> interest_evaluations){
+        return Integer.parseInt(interest_evaluations.entrySet()
+                .stream()
+                .filter(entry -> Objects.equals(entry.getValue(), Collections.max(interest_evaluations.values())))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList()).get(0));
+    }
+
+
 }

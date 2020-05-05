@@ -1,15 +1,19 @@
 package rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import helpers.Constants;
-import model.DemoInObject;
-import model.DemoOutObject;
-import model.Person;
+import model.Advertisement;
+
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.*;
+
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -17,40 +21,51 @@ import javax.ws.rs.core.MediaType;
 //@WebService
 public class RestResources {
     @POST
-    @Path("select_advertisement")
-    public void select_advertisement(Person[] persons) {
-        for(Person person : persons){
-            person.print_person();
+    @Path("evaluate")
+    public Map<Integer, Double> select_advertisement(ArrayList<Integer> viewers) {
+        Map<Integer, Double> advertisements_evaluation = new HashMap<>();
+
+        Set <String> topics = new HashSet();
+        for (Map<String, Double> ad_topics : Constants.Advertisements.values())
+            topics.addAll(ad_topics.keySet());
+        //System.out.println(advertisement_id);
+        for (int viewer : viewers) {
+            Advertisement AD = new Advertisement(viewer, topics);
+            Map<String, Double> viewer_interests = get_viewer_interests(AD);
+            Advertisement.print_map(viewer_interests);
+            for (int advertisement_id : Constants.Advertisements.keySet()) {
+                if(!advertisements_evaluation.containsKey(advertisement_id))
+                    advertisements_evaluation.put(advertisement_id, Advertisement.interest(viewer_interests, Constants.Advertisements.get(advertisement_id))/viewers.size());
+                else advertisements_evaluation.put(advertisement_id, advertisements_evaluation.get(advertisement_id)+Advertisement.interest(viewer_interests, Constants.Advertisements.get(advertisement_id))/viewers.size());
+
+            }
         }
-
-
+        return advertisements_evaluation;
     }
+
 
     @GET
-    @Path("retrain")
-    public void retrain(){
-        System.out.println("retrain");
-    }
-
-    public Person demographic_group(Person person){
-        Client client = new Client();
-        WebResource webResource = client.resource(Constants.Viewer_Describing_Service);
-        webResource.type("application/json").post(ClientResponse.class);
-        //person = webResource.entity(Person);
-        return person;
-    }
-
-
-
-    @POST
     @Path("demo")
-    public DemoOutObject demo(DemoInObject in) {
-        return new DemoOutObject(in.getRequest_id(),
-                in.getTransaction_type(),
-                in.getTime(),
-                in.getTarget(),
-                in.getSource(),
-                in.getOrder_number());
+    public String demo() {
+        System.out.println("Demo!");
+        return "Demo";
     }
+
+    public Map<String, Double> get_viewer_interests(Advertisement advertisement) {
+        Map<String, Double> result = new HashMap<>();
+        Client client = new Client();
+        WebResource webResource = client.resource(Constants.VIEWER_INTERESTS_EVALUATION_SERVICE);
+        ClientResponse clientResponse = webResource.accept(APPLICATION_JSON_TYPE).type(APPLICATION_JSON_TYPE).post(ClientResponse.class, advertisement.toJSON());
+        if (clientResponse.getStatus() == 200) {
+            try {
+               result = new ObjectMapper().readValue(clientResponse.getEntity(String.class), HashMap.class);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            //logMessage("Got demographical status for a viewer "+ person.toJSON());
+        }
+        return result;
+    }
+
 
 }
