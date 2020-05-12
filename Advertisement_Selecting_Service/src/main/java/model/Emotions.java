@@ -67,14 +67,14 @@ public class Emotions {
         this.surprise = surprise;
     }
 
-    public void print_emotions(){
-        System.out.println("    anger "+anger);
-        System.out.println("    contempt "+contempt);
-        System.out.println("    disgust "+disgust);
-        System.out.println("    fear "+fear);
-        System.out.println("    happiness "+happiness);
-        System.out.println("    neutral "+neutral);
-        System.out.println("    sadness "+sadness);
-        System.out.println("    surprise "+surprise);
+    public void print_emotions() {
+        System.out.println("    anger " + anger);
+        System.out.println("    contempt " + contempt);
+        System.out.println("    disgust " + disgust);
+        System.out.println("    fear " + fear);
+        System.out.println("    happiness " + happiness);
+        System.out.println("    neutral " + neutral);
+        System.out.println("    sadness " + sadness);
+        System.out.println("    surprise " + surprise);
     }
 }

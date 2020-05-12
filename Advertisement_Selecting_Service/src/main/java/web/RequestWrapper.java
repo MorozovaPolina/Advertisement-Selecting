@@ -12,7 +12,7 @@ import java.io.IOException;
 public class RequestWrapper extends HttpServletRequestWrapper {
     private final String content;
 
-    public String getContent(){
+    public String getContent() {
         return this.content;
     }
 
@@ -33,7 +33,8 @@ public class RequestWrapper extends HttpServletRequestWrapper {
                 return false;
             }
 
-            public void setReadListener(ReadListener readListener) {}
+            public void setReadListener(ReadListener readListener) {
+            }
 
             public int read() {
                 return byteArrayInputStream.read();

@@ -7,15 +7,14 @@ import java.text.SimpleDateFormat;
 
 public class DemoHelper {
     public static Logger logger = LoggerFactory.getLogger("requestLogger");
-    public static final ThreadLocal<SimpleDateFormat> DateTimeFormatter = new ThreadLocal<SimpleDateFormat>(){
+    public static final ThreadLocal<SimpleDateFormat> DateTimeFormatter = new ThreadLocal<SimpleDateFormat>() {
         @Override
-        protected SimpleDateFormat initialValue()
-        {
+        protected SimpleDateFormat initialValue() {
             return new SimpleDateFormat(Constants.DEMO_DATE_FORMAT);
         }
     };
 
-   public static final void logMessage(String message){
+    public static final void logMessage(String message) {
         logger.info(message);
 
     }

@@ -1,4 +1,4 @@
-package rest;
+package rest.resources;
 
 
 import com.sun.jersey.api.client.Client;
@@ -11,15 +11,11 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.servlet.annotation.WebServlet;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static helpers.DemoHelper.logMessage;
-import static java.util.Arrays.stream;
 import static javax.ws.rs.core.MediaType.*;
+import static rest.Calculations.get_advertisement;
 
 @Produces(APPLICATION_JSON)
 @Consumes(APPLICATION_JSON)
@@ -30,23 +26,22 @@ public class RestResources {
     @Path("select_advertisement")
     public int select_advertisement(Person[] persons) throws IOException {
         ArrayList<Integer> viewers = new ArrayList<>();
-        for(Person person : persons){
+        for (Person person : persons) {
             int demografic_group = (int) demographic_group(person);
             person.setDemographic_group(demografic_group);
             viewers.add(demografic_group);
             person.print_person();
         }
-        return Person.get_advertisement(get_interests(viewers));
+        return get_advertisement(get_interests(viewers));
     }
 
-    public static long demographic_group(Person person){
-        Client client =  new Client();
+    public static long demographic_group(Person person) {
+        Client client = new Client();
         WebResource webResource = client.resource(Constants.Viewer_Describing_Service);
         ClientResponse clientResponse = webResource.accept(APPLICATION_JSON_TYPE).type(APPLICATION_JSON_TYPE).post(ClientResponse.class, person.toJSON());
-        if(clientResponse.getStatus() == 200) {
+        if (clientResponse.getStatus() == 200) {
             return Long.parseLong(clientResponse.getEntity(String.class));
-        }
-        else new Exception();
+        } else new Exception();
         return -1;
     }
 
@@ -54,10 +49,10 @@ public class RestResources {
         Map<String, Double> result = new HashMap<>();
         Client client = new Client();
         WebResource webResource = client.resource(Constants.Interests_Evaluation_service);
-        ClientResponse clientResponse =webResource.accept(APPLICATION_JSON_TYPE).type(APPLICATION_JSON_TYPE).post(ClientResponse.class,
+        ClientResponse clientResponse = webResource.accept(APPLICATION_JSON_TYPE).type(APPLICATION_JSON_TYPE).post(ClientResponse.class,
                 new ObjectMapper().writeValueAsString(vewers));
-        if(clientResponse.getStatus() == 200) {
-           result= new ObjectMapper().readValue(clientResponse.getEntity(String.class), HashMap.class);;
+        if (clientResponse.getStatus() == 200) {
+            result = new ObjectMapper().readValue(clientResponse.getEntity(String.class), HashMap.class);
         }
         return result;
     }

@@ -23,7 +23,7 @@
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>rest</param-value>
+            <param-value>rest/resources</param-value>
         </init-param>
         <load-on-startup>2</load-on-startup>
     </servlet>

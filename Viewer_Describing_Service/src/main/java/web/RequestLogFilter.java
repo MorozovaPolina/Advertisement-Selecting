@@ -19,8 +19,8 @@ public class RequestLogFilter implements Filter {
         RequestWrapper wrappedRequest = new RequestWrapper((HttpServletRequest) request);
         try {
             Thread.currentThread().setName(nodeId + requestId.incrementAndGet());
-            if(!wrappedRequest.getMethod().equals("GET"))
-                if(!wrappedRequest.getRemoteAddr().equals("0:0:0:0:0:0:0:1"))
+            //if(!wrappedRequest.getMethod().equals("GET"))
+            //    if(!wrappedRequest.getRemoteAddr().equals("0:0:0:0:0:0:0:1"))
                     logger.info(wrappedRequest.getRemoteAddr() + " " + wrappedRequest.getMethod() + " " + wrappedRequest.getRequestURI() + " " + wrappedRequest.getContent());
             filterChain.doFilter(wrappedRequest, response);
 
