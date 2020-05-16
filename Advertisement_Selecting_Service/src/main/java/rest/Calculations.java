@@ -13,7 +13,7 @@ public class Calculations {
                 .filter(entry -> Objects.equals(entry.getValue(), Collections.max(interest_evaluations.values())))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList()).get(0));
-
+        System.out.println("Suggested advertisement id - "+result);
         return result;
     }
 }
