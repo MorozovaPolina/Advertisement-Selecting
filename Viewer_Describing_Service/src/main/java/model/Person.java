@@ -6,21 +6,21 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 public class Person {
 
     Gender gender;
-    int age;
+    double age;
     Emotions emotion;
     @JsonIgnore
-    long demographic_group;
+    double demographic_group;
    /* public Person(int age, Gender gender, Emotions emotions){
         this.age = age;
         this.gender = gender;
         this.emotion = emotions;
     }*/
 
-    public int getAge() {
+    public double getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(double age) {
         this.age = age;
     }
 
@@ -44,11 +44,11 @@ public class Person {
         this.emotion = emotion;
     }
 
-    public long getDemographic_group() {
+    public double getDemographic_group() {
         return demographic_group;
     }
 
-    public void setDemographic_group(long demographic_group) {
+    public void setDemographic_group(double demographic_group) {
         this.demographic_group = demographic_group;
     }
 
