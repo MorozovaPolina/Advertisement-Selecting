@@ -36,12 +36,13 @@ public class RestResources {
         }
 
         person.setDemographic_group(closest_centroid);
+        person.print_person();
         return closest_centroid;
     }
 
     public static double calculate_distance(Person person, Person centroid){
         double result =0;
-        result+=Math.pow((person.getAge()-centroid.getAge()), 2);
+        result+=Math.pow((person.getAge()/100-centroid.getAge()/100), 2);
         if(person.getGender()!=centroid.getGender()) result++;
         result+=Math.pow((person.getEmotion().getAnger()-centroid.getEmotion().getAnger()),2);
         result+=Math.pow((person.getEmotion().getContempt()-centroid.getEmotion().getContempt()),2);

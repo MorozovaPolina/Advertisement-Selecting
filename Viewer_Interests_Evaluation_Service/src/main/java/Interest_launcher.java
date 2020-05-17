@@ -11,6 +11,8 @@ import org.jgrapht.Graph;
 import org.jgrapht.alg.shortestpath.FloydWarshallShortestPaths;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
+import org.jgrapht.io.CSVExporter;
+import org.jgrapht.io.CSVFormat;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 
@@ -26,8 +28,7 @@ import static helpers.Constants.ontology;
 
 public class Interest_launcher {
     public static void main(String[] args) throws Exception {
-        try(InputStream inputStream = new FileInputStream("Viewer_Interests_Evaluation_Service/src/main/resources/config.properties")) {
-            initiate();
+        initiate();
 
             Locale.setDefault(Locale.ENGLISH);
             Server server = new Server(PORT);
@@ -40,7 +41,6 @@ public class Interest_launcher {
 
             server.setHandler(context);
             server.start();
-        }
     }
 
         public static void initiate() {
@@ -59,6 +59,7 @@ public class Interest_launcher {
                 ontology.get("Cars").printEntity();
                 ontology.get("Sport").printEntity();
                 System.out.println(graph.getPathWeight(ontology.get("Cars"), ontology.get("Sport")));
+                print_distances();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -68,7 +69,8 @@ public class Interest_launcher {
             }
         }
 
-        public static HashMap<String, Entity> upload_Ontology() throws OWLOntologyCreationException {
+
+    public static HashMap<String, Entity> upload_Ontology() throws OWLOntologyCreationException {
             OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
             File ontology_file = new File("Viewer_Interests_Evaluation_Service/src/main/resources/Files/Interests_v0.3.owl");
             OWLOntology owlOntology = ontologyManager.loadOntologyFromOntologyDocument(ontology_file);
@@ -164,6 +166,36 @@ public class Interest_launcher {
                 }
             }
             return interests;
+        }
+
+        public static void print_distances(){
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("Distances");
+        Row row = sheet.createRow(0);
+        int cells=1;
+        for(String subject: ontology.keySet() ) {
+            row.createCell(cells).setCellValue(subject);
+            cells++;
+        }
+        int row_number = 1;
+        for(String subject:ontology.keySet()){
+            row = sheet.createRow(row_number);
+            row_number++;
+            row.createCell(0).setCellValue(subject);
+            cells=1;
+            for(String target: ontology.keySet()){
+                row.createCell(cells).setCellValue(graph.getPathWeight(ontology.get(subject), ontology.get(target)));
+                cells++;
+            }
+        }
+            try (FileOutputStream outputStream = new FileOutputStream("distances.xlsx")) {
+                workbook.write(outputStream);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
 
 }
