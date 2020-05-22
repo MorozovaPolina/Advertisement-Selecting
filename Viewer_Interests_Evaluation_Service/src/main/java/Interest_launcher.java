@@ -56,9 +56,6 @@ public class Interest_launcher {
 
                 graph = new FloydWarshallShortestPaths<>(create_graph(ontology));
                 interests = initialize_interests();
-                ontology.get("Cars").printEntity();
-                ontology.get("Sport").printEntity();
-                System.out.println(graph.getPathWeight(ontology.get("Cars"), ontology.get("Sport")));
                 print_distances();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -75,14 +72,12 @@ public class Interest_launcher {
             File ontology_file = new File("Viewer_Interests_Evaluation_Service/src/main/resources/Files/Interests_v0.3.owl");
             OWLOntology owlOntology = ontologyManager.loadOntologyFromOntologyDocument(ontology_file);
             IRI iri = owlOntology.getOntologyID().getOntologyIRI().get();
-            System.out.println(iri);
             HashMap<String, Entity> ontology=  new HashMap<>();
             Entity Thing = new Entity("Thing");
             ontology.put("Thing", Thing);
             for(OWLClass Class: owlOntology.getClassesInSignature()) {
                 Entity entity = new Entity(Class.getIRI().getShortForm());
                 ontology.put(Class.getIRI().getShortForm(), entity);
-                entity.printEntity();
             }
             for(OWLClass Class: owlOntology.getClassesInSignature()) {
                 Entity entity = ontology.get(Class.getIRI().getShortForm());
@@ -91,18 +86,14 @@ public class Interest_launcher {
                 else
                     for(OWLSubClassOfAxiom parent: owlOntology.getSubClassAxiomsForSubClass(Class))
                         entity.addParent(ontology.get(parent.getSuperClass().asOWLClass().getIRI().getShortForm()));
-                entity.printEntity();
 
                 //System.out.println(entity.asOWLClass().getIRI().getShortForm() );
             }
             for(OWLObjectProperty property: owlOntology.getObjectPropertiesInSignature()){
-                System.out.println(property.getIRI().getShortForm());
                 for( OWLObjectPropertyDomainAxiom domain: owlOntology.getObjectPropertyDomainAxioms(property)) {
-                    System.out.println("Domain "+domain.getDomain().getClassesInSignature());
                     Entity entity = null;
                     for(OWLClassExpression owlClass: domain.getDomain().getClassesInSignature()) {
                         //if(owlClass instanceof OWLClass)
-                        System.out.println(owlClass.asOWLClass().getIRI().getShortForm());
                         entity = ontology.get(owlClass.asOWLClass().getIRI().getShortForm());
                     }
                     //else continue;
@@ -119,8 +110,6 @@ public class Interest_launcher {
                         //else continue;
 
                     }
-                    entity.printEntity();
-                    System.out.println();
                 }
             }
             //System.out.println(property);

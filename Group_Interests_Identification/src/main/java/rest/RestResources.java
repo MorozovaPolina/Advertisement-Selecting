@@ -37,8 +37,8 @@ public class RestResources {
                 if(!advertisements_evaluation.containsKey(advertisement_id))
                     advertisements_evaluation.put(advertisement_id, Advertisement.interest(viewer_interests, Constants.Advertisements.get(advertisement_id))/viewers.size());
                 else advertisements_evaluation.put(advertisement_id, advertisements_evaluation.get(advertisement_id)+Advertisement.interest(viewer_interests, Constants.Advertisements.get(advertisement_id))/viewers.size());
-
             }
+            Advertisement.print_ads(advertisements_evaluation);
         }
         return advertisements_evaluation;
     }

@@ -58,4 +58,7 @@ public class Advertisement {
     public static void print_map(Map<String, Double> viewer_interests){
         for(String key:viewer_interests.keySet()) System.out.println(key+": interest = "+viewer_interests.get(key));
     }
+    public static void print_ads(Map<Integer, Double> viewer_interests){
+        for(int key:viewer_interests.keySet()) System.out.println(key+": interest = "+viewer_interests.get(key));
+    }
 }

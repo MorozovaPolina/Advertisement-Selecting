@@ -36,11 +36,6 @@ public class Group_Interests_launcher {
             server.setHandler(context);
             server.start();
 
-            for(Map<String, Double> advertisement : Constants.Advertisements.values()) {
-                for (String key : advertisement.keySet())
-                    System.out.println(key+": "+advertisement.get(key));
-                System.out.println("___________________-");
-            }
         }
 
 }

@@ -68,11 +68,6 @@ public static Map<Integer, Person> initialize_clusters() throws IOException {
         cluster.setEmotion(emotion);
         clusters.put((int)row.getCell(0).getNumericCellValue(), cluster);
     }
-
-    for(Integer key: clusters.keySet()){
-        System.out.print(key+" ");
-        clusters.get(key).print_person();
-    }
     return clusters;
 
 
