@@ -11,7 +11,7 @@
     <module>Viewer_Interests_Evaluation_Service</module>
   </modules>
   <properties>
-    <jetty.version>10.0.0.alpha2</jetty.version>
+    <jetty.version>10.0.10</jetty.version>
     <jersey.version>1.18</jersey.version>
   </properties>
   <packaging>pom</packaging>
